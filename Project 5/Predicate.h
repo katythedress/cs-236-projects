@@ -14,7 +14,7 @@ class Predicate
 		void setIdentity(string);
 		void addParameter(Parameter);
 		void cleanPredicate();
-		string getIdent() const { return ident; }
-		vector<Parameter> getParamList() const { return paramList; }
+		string getIdentity() const { return ident; }
+		vector<Parameter> getParameterList() const { return paramList; }
 		string toString();
 };

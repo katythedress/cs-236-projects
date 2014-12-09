@@ -33,10 +33,10 @@ class Parser
 		Parser(char*, char*);
 		
 		void parseDatalog();
-		Datalog getDatalogProg() const { return dp; }
-		Rule getR() const { return r; }
-		Predicate getPr() const { return pr; }
-		Parameter getPm() const { return pm; }
+		Datalog getDatalog() const { return dp; }
+		Rule getRelation() const { return r; }
+		Predicate getPredicate() const { return pr; }
+		Parameter getParameter() const { return pm; }
 		string errorToString();
 		string toString();
 };

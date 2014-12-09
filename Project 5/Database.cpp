@@ -17,10 +17,10 @@ string printd(vector<string> vec)
 Database::Database(char* arg1, char* arg2) : p(arg1, arg2)
 {
 	size = -1;
-	schemes = p.getDatalogProg().getSchemes();
-	facts = p.getDatalogProg().getFacts();
-	rules = p.getDatalogProg().getRules();
-	queries = p.getDatalogProg().getQueries();
+	schemes = p.getDatalog().getSchemes();
+	facts = p.getDatalog().getFacts();
+	rules = p.getDatalog().getRules();
+	queries = p.getDatalog().getQueries();
 	out.open(arg2);
 	buildRelations();
 	out << "Scheme Evaluation" << endl << endl << "Fact Evaluation" << endl << endl;
@@ -56,7 +56,7 @@ void Database::parseSchemes()
 
 	for (unsigned int i = 0; i < schemes.size(); i++)
 	{
-		r.setName(schemes.at(i).getIdent());
+		r.setName(schemes.at(i).getIdentity());
 		setRelationScheme(r, i);
 		rels.insert(pair<string, Relation>(r.getName(), r));
 		r.clear();
@@ -65,9 +65,9 @@ void Database::parseSchemes()
 
 void Database::setRelationScheme(Relation& r, unsigned int i)
 {
-	for (unsigned int j = 0; j < schemes.at(i).getParamList().size(); j++)
+	for (unsigned int j = 0; j < schemes.at(i).getParameterList().size(); j++)
 	{
-		r.addSchemeAttribute(p.getDatalogProg().getSchemes().at(i).getParamList().at(j).getValue());
+		r.addSchemeAttribute(p.getDatalog().getSchemes().at(i).getParameterList().at(j).getValue());
 	}
 }
 
@@ -77,10 +77,10 @@ void Database::parseFacts()
 
 	for (unsigned int i = 0; i < facts.size(); i++)
 	{
-		if (rels.count(facts.at(i).getIdent()))
+		if (rels.count(facts.at(i).getIdentity()))
 		{
 			setTupleAttributeValues(t, i);
-			rels.at(facts.at(i).getIdent()).addTuple(t);
+			rels.at(facts.at(i).getIdentity()).addTuple(t);
 			t.clear();
 		}
 	}
@@ -88,9 +88,9 @@ void Database::parseFacts()
 
 void Database::setTupleAttributeValues(Tuple& t, unsigned int i)
 {
-	for(unsigned int j = 0; j < facts.at(i).getParamList().size(); j++)
+	for(unsigned int j = 0; j < facts.at(i).getParameterList().size(); j++)
 	{
-		t.addAttributeValue(facts.at(i).getParamList().at(j).getValue());
+		t.addAttributeValue(facts.at(i).getParameterList().at(j).getValue());
 	}
 }
 
@@ -105,7 +105,7 @@ void Database::buildDependancyGraph()
 		{
 			for (unsigned int k = 0; k < predList.size(); k++)
 			{
-				if (rules.at(j).getHead().getIdent() == predList.at(k).getIdent())
+				if (rules.at(j).getHead().getIdentity() == predList.at(k).getIdentity())
 				{
 					dependancyGraph.addAdjacentNode("R", i+1, "R", j+1);
 				}
@@ -116,7 +116,7 @@ void Database::buildDependancyGraph()
 		{
 			dependancyGraph.addNode("Q", j+1);
 
-			if (rules.at(i).getHead().getIdent() == queries.at(j).getIdent())
+			if (rules.at(i).getHead().getIdentity() == queries.at(j).getIdentity())
 			{
 				dependancyGraph.addAdjacentNode("Q", j+1, "R", i+1);
 			}
@@ -213,16 +213,16 @@ void Database::evaluateRules()
 
 	for (unsigned int i = 0; i < rulesToEval.size(); i++)
 	{
-		head = rulesToEval.at(i).getHead().getIdent();
-		headParams = rulesToEval.at(i).getHead().getParamList();
+		head = rulesToEval.at(i).getHead().getIdentity();
+		headParams = rulesToEval.at(i).getHead().getParameterList();
 		predList = rulesToEval.at(i).getPredList();
 
 		for (unsigned int j = 0; j < predList.size(); j++)
 		{
-			if (rels.count(predList.at(j).getIdent()))
+			if (rels.count(predList.at(j).getIdentity()))
 			{
-				r = rels.at(predList.at(j).getIdent());
-				paramList = predList.at(j).getParamList();
+				r = rels.at(predList.at(j).getIdentity());
+				paramList = predList.at(j).getParameterList();
 				forEachParameterSelect(paramList, r, j, variables, variablePos, variableNames);
 			}
 
@@ -340,10 +340,10 @@ void Database::evalQuery(Predicate q)
 	vector<Parameter> paramList;
 	string value;
 
-	if (rels.count(q.getIdent()))
+	if (rels.count(q.getIdentity()))
 	{
-		r = rels.at(q.getIdent());
-		paramList = q.getParamList();
+		r = rels.at(q.getIdentity());
+		paramList = q.getParameterList();
 
 		for (unsigned int j = 0; j < paramList.size(); j++)
 		{
