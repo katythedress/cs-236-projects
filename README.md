@@ -1,4 +1,4 @@
-I'm not proud of this code, but I'm leaving it here for some poor sap who's failing the class. Yay, BYU.
+I'm not proud of this code, but I'm leaving it here for some poor kid who's failing the class. Yay, BYU.
 
 These assignments are written in C++ and together make a sort of "interpreter" for simple Datalog "programs." Each of these labs passes according to the fall 2014 requirements. I had Barker as a professor. Crazy dude.
 
